@@ -99,56 +99,65 @@ provider_data   3rd party data responses [ or feed data coming in at any time ]
 Simulator
 -----
 
-one node prog that just has a few timer jobs for each process, and use real mongo Q
-then replace components one by one with seperate node processes.
-
-10k users having 1M info notes, 
-test client fetches info notes for a random user
-provider app inserts new random info notes [ ~1000/sec ]
+    Currently have a working demo with these services :
+    
+        store_mongo     : stores and fetched data to/from mongodb
+        web_face        : web server, web request/response become messages to/from store
+        provider_random : makes random items
+        
+        client_test     : loops making requests for random users data
+        
+    queues :
+    
+        store_get       : requests to fetch data [ eg all items for user ]
+        store_put       : requests to save data items
+        store_notify    : notifications of new data arrival / changes
+        web_data        : return queue which web server reads, holds fetched data
+        
 
 Performance
 -----
 
-on 2nd gen i5 with 2 cores [ 4 hw threads], 
-running mongo, redis, 2 servers + 2 client testers + 1 data provider
-2GB data collection in mongo
-4 cores kept busy [ 60 to 80 % load ]
-most web requests handled in 20 to 50 ms range, [ with mongo taking 10 to 30ms of that ]
+    on 2nd gen i5 with 2 cores [ 4 hw threads], 
+    running mongo, redis, 2 servers + 2 client testers + 1 data provider
+    2GB data collection in mongo
+    4 cores kept busy [ 60 to 80 % load ]
+    most web requests handled in 20 to 50 ms range, [ with mongo taking 10 to 30ms of that ]
 
 
 Initial implementation
 -----
 
-generator - 
-add random data for random users - push into store_put
-
-store - 
-get jobs from store_put, writes to db, emit notification to store_notify
-get query from store_get, write result to named result q
-
-web - 
-http://localhost:3000/info/uid:/lim:/off:
-put request on store_get, [ set responseq = 'app_data' ]
-store fetches, puts on app_data
-get data on store_data, send to response
-
-client - 
-randomly request a users recent data - 
-uid in 0..999 fetch url : http://localhost:3000/info/{uid} 
-simulate 1000 clients with curl, test latency, throughput
-
-redpill message queue impl - 
-uses redic pub/sub together with redis list primitives
+    generator - 
+    add random data for random users - push into store_put
+    
+    store - 
+    get jobs from store_put, writes to db, emit notification to store_notify
+    get query from store_get, write result to named result q
+    
+    web - 
+    http://localhost:3000/info/uid:/lim:/off:
+    put request on store_get, [ set responseq = 'app_data' ]
+    store fetches, puts on app_data
+    get data on store_data, send to response
+    
+    client - 
+    randomly request a users recent data - 
+    uid in 0..999 fetch url : http://localhost:3000/info/{uid} 
+    simulate 1000 clients with curl, test latency, throughput
+    
+    redpill message queue impl - 
+    uses redic pub/sub together with redis list primitives
 
 
 Running
 -----
 
-store_mongo.js          mongo data store [ gets data requests on queue, responds on queue ]
-web_face.js             web server [ gets http url requests, puts on q, gets response on q, sends it ]
-provider_random.js      inserts random data items to store [ 100k items at roughly 1k/sec ]
-
-client_test.js          makes many repeated http requests for random users info items
+    store_mongo.js          mongo data store [ gets data requests on queue, responds on queue ]
+    web_face.js             web server [ gets http url requests, puts on q, gets response on q, sends it ]
+    provider_random.js      inserts random data items to store [ 100k items at roughly 1k/sec ]
+    
+    client_test.js          makes many repeated http requests for random users info items
 
 
 TODO
