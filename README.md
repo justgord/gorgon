@@ -63,18 +63,18 @@ Typical Data Schema
 DataFlow
 -----
 
-client url request comes in [ from ajax, rest, or website ]
-request is put on auth
-
-an auth server grabs it, adds an error or auth token/credentials if allowed
-
-appserver needs to lookup some data, puts that job onto data_get 
-DataStore fetches data, puts it on data_ready
-appserver gets the data back on data_ready
-appserver needs to write some data, puts that job onto data_put 
-appserver sends some message out to 3rd party, puts job onto provider_put
-appserver sends response back to client, puts job on web_put
-webserver gets outbound response job, sends reponse to client
+    client url request comes in [ from ajax, rest, or website ]
+    request is put on auth
+    
+    an auth server grabs it, adds an error or auth token/credentials if allowed
+    
+    appserver needs to lookup some data, puts that job onto data_get 
+    DataStore fetches data, puts it on data_ready
+    appserver gets the data back on data_ready
+    appserver needs to write some data, puts that job onto data_put 
+    appserver sends some message out to 3rd party, puts job onto provider_put
+    appserver sends response back to client, puts job on web_put
+    webserver gets outbound response job, sends reponse to client
 
 
 Queues
