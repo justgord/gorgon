@@ -11,6 +11,7 @@ Gorgon
 
 
 Stack
+----
 
     redis           publish/subscribe messaging
     mongodb         json doc data store
