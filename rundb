@@ -1,0 +1,3 @@
+#!/bin/bash
+#
+nohup mongod --dbpath ~/local/mongo/db 2>&1 > run.mongo.log &

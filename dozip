@@ -1,0 +1,11 @@
+#!/bin/bash
+# backup to zz
+#
+NAM=gorgon
+ZTS=`date +%Y%m%d_%H%M%S`
+ZFN=~/zz/$NAM.$ZTS.tgz
+#
+cd ..
+tar --exclude="node_modules" -zcvf  $ZFN $NAM;
+cd -
+echo zipped backup : $ZFN
