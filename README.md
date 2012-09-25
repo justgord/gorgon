@@ -40,24 +40,24 @@ StatsMonitor        : web view shows system throughput, latency, uptime, health 
 Typical Data Schema
 -----
 
-User
-    id
-    name
-    passhash
-    email
-    authtokens
-    [ other fields, extensible ]
+    User
+        id
+        name
+        passhash
+        email
+        authtokens
+        [ other fields, extensible ]
 
-Item
-    id
-    title
-    body
-    url
-    ts  
-    location
-    keywords
-    userid
-    [ other fields, extensible ]
+    Item
+        id
+        title
+        body
+        url
+        ts  
+        location
+        keywords
+        userid
+        [ other fields, extensible ]
 
 
 DataFlow
