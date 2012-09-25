@@ -1,40 +1,40 @@
 Gorgon
 ======
 
-Message/server architecture for scalable web apps - many node.js services talk via messaging
-
-server proceses talk via messaging, so you can run 1..n instances
-you can scale out by running more processes on more machines/cores
-fits well with node.js
-
-Want bring servers up and down at any time without disturbing operations
+    Message/server architecture for scalable web apps - many node.js services talk via messaging
+    
+    server proceses talk via messaging, so you can run 1..n instances
+    you can scale out by running more processes on more machines/cores
+    fits well with node.js
+    
+    Want bring servers up and down at any time without disturbing operations
 
 
 Stack
 -----
 
-redis           publish/subscribe messaging
-mongodb         json doc data store
-node.js         async javascript apps
-redpill         persistent pub/sub messaging [ push/pull ] semantics using redis pubsub and lists
+    redis           publish/subscribe messaging
+    mongodb         json doc data store
+    node.js         async javascript apps
+    redpill         persistent pub/sub messaging [ push/pull ] via redis pubsub and lists
 
 
 Architecture Roles [ server instances ]:
 -----
 
-DataProviders       : interface to external data providers, send data in / out
-
-DataStores          : interface to database or datastore eg. mongoDB, mysql, 
-
-WebServer           : handles web requests, web json url api, rest api etc [ external interface ]
-
-NotificationServer  : interface to handle notifications [ pubnub, socket.io, emails ]
-
-AuthServer          : authentication of user requests, user registration, user login, access rights..
-
-AppServer           : does the core application processing
-
-StatsMonitor        : web view shows system throughput, latency, uptime, health stats
+    DataProviders       : interface to external data providers, send data in / out
+    
+    DataStores          : interface to database or datastore eg. mongoDB, mysql, 
+    
+    WebServer           : handles web requests, web json url api, rest api etc [ external interface ]
+    
+    NotificationServer  : interface to handle notifications [ pubnub, socket.io, emails ]
+    
+    AuthServer          : authentication of user requests, user registration, user login, access rights..
+    
+    AppServer           : does the core application processing
+    
+    StatsMonitor        : web view shows system throughput, latency, uptime, health stats
 
 
 Typical Data Schema
@@ -80,20 +80,20 @@ DataFlow
 Queues
 -----
 
-web_get         web requests as json tasks
-web_data        web responses
-
-auth_get        authentication requests - login, register, change pass, add Oauth2, validate, logout
-auth_data       authentication responses
-
-store_get       data requests/read [ request has db, collection, id, filter/query ]
-store_put       data update/store/write
-store_data      data fetch responses / data ready
-store_notify    data events - notify whenever theres an add, edit, del of items
-
-provider_get    3rd party external data providers [ facebook, gmail, other system apis ]
-provider_put    send to 3rd party external data systems 
-provider_data   3rd party data responses [ or feed data coming in at any time ]
+    web_get         web requests as json tasks
+    web_data        web responses
+    
+    auth_get        authentication requests - login, register, change pass, add Oauth2, validate, logout
+    auth_data       authentication responses
+    
+    store_get       data requests/read [ request has db, collection, id, filter/query ]
+    store_put       data update/store/write
+    store_data      data fetch responses / data ready
+    store_notify    data events - notify whenever theres an add, edit, del of items
+    
+    provider_get    3rd party external data providers [ facebook, gmail, other system apis ]
+    provider_put    send to 3rd party external data systems 
+    provider_data   3rd party data responses [ or feed data coming in at any time ]
 
 
 Simulator
@@ -163,37 +163,37 @@ Running
 TODO
 -----
 
-make redpill, gorgon npm modules proper
-
-diagram
-
-stats + web stats page [ heatmap ]
-
-web page to view stats .. refresh loop every sec, keep last 5sec
-stats : latency count bytes
-stats - listen to store_notify, auth_get, etc and summarize per second, per hour, per day
-
-run multiple servers, bring one down, bring up .. check all good, no interruptions
-
-Multi-server-instance - several stores, several web_face, several providers
-can split store server into store-write and store-read ,
-so they can overlap on threads ie. less contention as read/write are not pumped thru 1 thread
-
-
-logging - listen to store_notify, log to system file
-
-notifies - socket.io updates in realtime ?
-
-users - rego, login, auth tokens
-
-email provider - get photos from email, make into a nice cascade of thumbnails, with tags/search
-
-redis queue downtime/recover - kill q, restart .. check we didnt lose jobs, also automate restart
+    make redpill, gorgon npm modules proper
+    
+    diagram
+    
+    stats + web stats page [ heatmap ]
+    
+    web page to view stats .. refresh loop every sec, keep last 5sec
+    stats : latency count bytes
+    stats - listen to store_notify, auth_get, etc and summarize per second, per hour, per day
+    
+    run multiple servers, bring one down, bring up .. check all good, no interruptions
+    
+    Multi-server-instance - several stores, several web_face, several providers
+    can split store server into store-write and store-read ,
+    so they can overlap on threads ie. less contention as read/write are not pumped thru 1 thread
+    
+    
+    logging - listen to store_notify, log to system file
+    
+    notifies - socket.io updates in realtime ?
+    
+    users - rego, login, auth tokens
+    
+    email provider - get photos from email, make into a nice cascade of thumbnails, with tags/search
+    
+    redis queue downtime/recover - kill q, restart .. check we didnt lose jobs, also automate restart
 
 Author
 ----
 
-(c) gordon anderson 2012
-gord@lokenote.com
-released under BSD + MIT open source licence
+    copyright (c) gordon anderson 2012
+    gord@lokenote.com
+    released under BSD + MIT open source licence
 
