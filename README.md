@@ -1,5 +1,4 @@
-
-gorgon
+Gorgon
 ======
 
 Message/server architecture for scalable web apps - many node.js services talk via messaging
@@ -38,7 +37,7 @@ AppServer           : does the core application processing
 StatsMonitor        : web view shows system throughput, latency, uptime, health stats
 
 
-Typical Data Schema :
+Typical Data Schema
 -----
 
 User
@@ -61,7 +60,7 @@ Item
     [ other fields, extensible ]
 
 
-Flow
+DataFlow
 -----
 
 client url request comes in [ from ajax, rest, or website ]
